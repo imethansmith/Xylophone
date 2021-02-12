@@ -19,23 +19,22 @@ class ViewController: UIViewController {
 
     @IBAction func keyPressed(_ sender: UIButton) {
         playSound(sender.currentTitle!)
-    }
-    
-    
-    func playSound(_ note: String) {
-        guard let url = Bundle.main.url(forResource: note, withExtension: "wav") else { return }
         
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-            
-            player = try AVAudioPlayer(contentsOf: url, fileTypeHint: AVFileType.mp3.rawValue)
-            
-            guard let player = player else { return }
-            player.play()
-        } catch let error {
-            print(error.localizedDescription)
+        // Set button to half opacity
+        sender.alpha = 0.5
+        
+        // Return button to original state over 0.2 seconds
+        UIView.animate(withDuration: 0.4) {
+                    sender.alpha = 1
         }
     }
+    
+    // Receive key pressed, play corresponding sound
+    func playSound(_ note: String) {
+            let url = Bundle.main.url(forResource: note, withExtension: "wav")
+            player = try! AVAudioPlayer(contentsOf: url!)
+            player!.play()
+                    
+        }
 }
 
